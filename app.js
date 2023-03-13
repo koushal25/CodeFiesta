@@ -80,9 +80,6 @@ app.post("/login",jsonParser, async function(req, res){       // Json parser inc
   try {
       
       const user = await User.findOne({ username: req.body.username });
-
-      console.log(req.body.username);
-      // console.log('chal naaaa....ahh');
       
       if (user) {
         //check if password matches
@@ -94,7 +91,7 @@ app.post("/login",jsonParser, async function(req, res){       // Json parser inc
           
         }
         else if (req.body.password === user.password) {
-          // console.log('enteredd');
+          
           res.redirect('question');
         } else {
           res.status(400).json({ error: "password doesn't match" });
@@ -106,7 +103,6 @@ app.post("/login",jsonParser, async function(req, res){       // Json parser inc
       res.status(400).json({ error });
     }
 });
-
 
 app.get("/question", isLoggedIn, function (req, res) {
   res.render("question");
@@ -120,6 +116,3 @@ function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) return next();
   res.redirect("login");
 }
-
-
-
