@@ -1,0 +1,155 @@
+body{
+  /* background-color: #272836; */
+  background-color: #1A1A1A;
+  
+}
+h1{
+  font-size: 54px;
+  text-transform: uppercase;
+  margin-left: 2%;
+  color: #cec3c3;
+  font-family: 'Odibee Sans', cursive;
+  
+  margin-bottom: 0;
+
+  margin-left: 53%;
+}
+h2{
+  font-size: 54px;
+  text-transform: uppercase;
+  
+  color: #b9aeae;
+  font-family: 'Odibee Sans', cursive;
+  margin-bottom: 0;
+
+  margin-left: 10%;
+}
+
+p{
+  margin-left: 10%;
+
+}
+
+#css {
+  color: yellow;
+  font-family: 'Odibee Sans', cursive;
+}
+
+.carousel-wrapper {
+  height: 520px;
+  position: relative;
+  width: 500px;
+  display: block;
+  margin-left: 2%;
+  border: 2px solid black;
+}
+
+.carousel-item {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 25px 50px;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+}
+.arrow{
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 12px;
+}
+.arrow-prev {
+  left: 30px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) rotate(135deg);
+
+}
+.arrow-next {
+  right: 30px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+[id^= "item"] {
+  display: none;
+}
+.item-1 {
+  z-index: 2;
+  opacity: 1;
+  
+  /* background: url('/assets/img/Carousel/Q1/celcius.jpg'); */
+  background: url('assets/img/Carousel/Q1/DISCOUNT PYTHON.jpeg');
+  background-size: cover;
+}
+.item-2 {
+  background: url('assets/img/Carousel/Q1/discount.jpeg');
+  background-size: cover;
+}
+
+*:target ~ .item-1{
+  opacity: 0;
+}
+#item-1:target ~ .item-1 {
+  opacity: 1;
+
+}
+#item-2:target ~ .item-2, #item-3:target ~ .item-3 {
+  z-index: 3;
+  opacity: 1;
+} 
+
+p
+{
+  font-size: 20px;
+  color: #f0e7e7;
+  /* margin-left: 2%; */
+}
+
+#parent{
+  display: flex;
+  /* justify-content: ; */
+  justify-content: space-around;
+}
+
+#textform{
+    margin-top:-6%;
+}
+
+textarea{
+  height: 515px;
+
+  /* //modified */
+  width: 550px;
+  font-size: 22px;
+  background-color: #2a2c2c;
+  color: #fff;
+
+  /* added */
+  margin-left: -50px; 
+  
+}
+
+button
+{ 
+  position: absolute;
+  margin-left: 10px;
+  height: 40px;
+  width: 100px;
+  /* modified */
+  margin-top: 31.5%;
+
+  font-size: 20px;
+ border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover{
+  background-color: green;
+  color: white;
+}
+
+

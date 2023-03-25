@@ -5,12 +5,18 @@ var express = require("express"),
   LocalStrategy = require("passport-local"),
   passportLocalMongoose = require("passport-local-mongoose");
 const User = require("./model/User");
-// const prompt = require('prompt-sync')({sigint: true});
-var flash = require("connect-flash");
 
+const session = require("express-session");
 const app = express();
 
-app.use(flash());
+//Added Afterwards
+const cors = require("cors");
+const { spawn } = require("child_process");
+const { generateFile } = require("./generateFile");
+const { runcodes } = require("./executebhai");
+const fs = require("fs");
+
+app.use(cors());
 var jsonParser = bodyParser.json();
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -41,7 +47,7 @@ app.use(
     secret: "Rusty is a dog",
     resave: false,
     saveUninitialized: false,
-    cookie: { _expires: 5 * 60 * 1000 },
+    cookie: { _expires: 60 * 60 * 1000 },
   })
 );
 
@@ -69,12 +75,14 @@ app.post("/admin/register", async (req, res) => {
       const user = await User.create({
         username: req.body.username,
         password: req.body.password,
+        email: req.body.email,
+        loggedin: true,
       });
     } else {
       console.log("User Already exists");
     }
 
-    res.redirect("/login");
+    res.redirect("/admin/register");
   } catch (err) {
     console.log(err);
     res.status(400).json({ err });
@@ -84,8 +92,6 @@ app.post("/admin/register", async (req, res) => {
 app.get("/admin/register", async function (req, res) {
   try {
     res.render("register");
-    let message = req.flash("username");
-    console.log(message);
   } catch (err) {
     console.log(err);
     res.status(400).json({ err });
@@ -95,10 +101,19 @@ app.get("/admin/register", async function (req, res) {
 app.post("/login", jsonParser, async function (req, res) {
   // Json parser included
   try {
-    const user = await User.findOne({ username: req.body.username });
 
+    const user = await User.findOne({ username: req.body.username });
     console.log(req.body.username);
 
+      
+      if(!(await user.loggedin === true))
+      {
+        res.status(400).json({ error: "You can attempt the test only once" });
+        res.end();
+        // res.redirect("/");
+      }
+
+    else{        //else
     if (user) {
       //check if password matches
       const result = req.body.password === user.password;
@@ -106,15 +121,18 @@ app.post("/login", jsonParser, async function (req, res) {
       if (req.body.password === "CodeWithBhai") {
         res.redirect("/admin/register");
       } else if (req.body.password === user.password) {
-        req.flash("username", req.body.username);
+        req.session.userId = req.body.username;
 
-        res.redirect("instruction");
+        res.render('instruction');
       } else {
         res.status(400).json({ error: "password doesn't match" });
       }
     } else {
       res.status(400).json({ error: "User doesn't exist" });
     }
+
+  } // else
+
   } catch (error) {
     res.status(400).json({ error });
   }
@@ -122,7 +140,11 @@ app.post("/login", jsonParser, async function (req, res) {
 
 app.get("/instruction", async function (req, res) {
   try {
+
     res.render("instruction");
+  
+
+
   } catch (err) {
     console.log(err);
     res.status(400).json({ err });
@@ -131,16 +153,11 @@ app.get("/instruction", async function (req, res) {
 
 app.get("/question", async function (req, res) {
   try {
-    res.render("question");
-  } catch (err) {
-    console.log(err);
-    res.status(400).json({ err });
-  }
-});
 
-app.get("/timeout", async function (req, res) {
-  try {
-    res.redirect("login");
+    // const startTime=new Date().getTime;
+    const username = req.session.username;
+    console.log(username);
+    res.render("question");
   } catch (err) {
     console.log(err);
     res.status(400).json({ err });
@@ -149,51 +166,102 @@ app.get("/timeout", async function (req, res) {
 
 app.post("/question/question1", async function (req, res) {
   try {
+    //added afterwards
+
+    const code = req.body.textinput;
+    const language = "bhai";
+
+    if (code == "undefined") {
+      res.redirect("/question");
+    }
+
+    var UserName = req.session.userId;
+    var Name = UserName + "_Q1";
+
+    if (UserName) {
+      const { filePath, fileName } = await generateFile(
+        UserName,
+        Name,
+        language,
+        code
+      );
+      runcodes(filePath, fileName);
+    } else {
+      res.redirect("/login");
+    }
+
+    // res.status(200).json({filePath});
+
+    //ADDED UP
+
     var ans = req.body.textinput;
-    console.log(ans);
 
-    let message = req.flash("username");
-    console.log(message);
-
-    const haiku = db.collection(message[0]);
+    const haiku = db.collection(req.session.userId);
 
     if (!haiku) {
-      db.createCollection(message[0], function (err, res) {
+      db.createCollection(req.session.userId, function (err, res) {
         if (err) throw err;
         console.log("Collection created!");
       });
     }
     const doc = {
       Q_no: "Question-1",
+      time: new Date().getTime(),
       code: ans,
     };
+
     const result = haiku.insertOne(doc);
     res.redirect("/question");
   } catch (err) {
-    res.redirect("/login");
+    // res.redirect("/login");
     console.log(err);
   }
 });
+
 app.post("/question/question2", async function (req, res) {
   try {
+    //added afterwards
+
+    const code = req.body.textinput;
+    const language = "bhai";
+
+    if (code == "undefined") {
+      res.redirect("/question");
+    }
+
+    var UserName = req.session.userId;
+    var Name = UserName + "_Q2";
+
+    if (UserName) {
+      const { filePath, fileName } = await generateFile(
+        UserName,
+        Name,
+        language,
+        code
+      );
+      runcodes(filePath, fileName);
+    } else {
+      res.redirect("/login");
+    }
+
+    //ADDED UP
+
     var ans = req.body.textinput;
-    console.log(ans);
 
-    let message = req.flash("username");
-    console.log(message);
-
-    const haiku = db.collection(message[0]);
+    const haiku = db.collection(req.session.userId);
 
     if (!haiku) {
-      db.createCollection(message[0], function (err, res) {
+      db.createCollection(req.session.userId, function (err, res) {
         if (err) throw err;
         console.log("Collection created!");
       });
     }
     const doc = {
       Q_no: "Question-2",
+      time: new Date().getTime(),
       code: ans,
     };
+
     const result = haiku.insertOne(doc);
     res.redirect("/question");
   } catch (err) {
@@ -204,22 +272,45 @@ app.post("/question/question2", async function (req, res) {
 
 app.post("/question/question3", async function (req, res) {
   try {
+    //added afterwards
+
+    const code = req.body.textinput;
+    const language = "bhai";
+
+    if (code == "undefined") {
+      res.redirect("/question");
+    }
+
+    var UserName = req.session.userId;
+    var Name = UserName + "_Q3";
+
+    if (UserName) {
+      const { filePath, fileName } = await generateFile(
+        UserName,
+        Name,
+        language,
+        code
+      );
+      runcodes(filePath, fileName);
+    } else {
+      res.redirect("/login");
+    }
+
+    //ADDED UP
+
     var ans = req.body.textinput;
-    console.log(ans);
 
-    let message = req.flash("username");
-    console.log(message);
-
-    const haiku = db.collection(message[0]);
+    const haiku = db.collection(req.session.userId);
 
     if (!haiku) {
-      db.createCollection(message[0], function (err, res) {
+      db.createCollection(req.session.userId, function (err, res) {
         if (err) throw err;
         console.log("Collection created!");
       });
     }
     const doc = {
       Q_no: "Question-3",
+      time: new Date().getTime(),
       code: ans,
     };
     const result = haiku.insertOne(doc);
@@ -263,6 +354,56 @@ app.get("/login", async function (req, res) {
     console.log(err);
     res.status(400).json({ err });
   }
+});
+app.get("/logout", async function (req, res) {
+  try {
+    const UserName=req.session.userId;
+    User.findOneAndUpdate({username: UserName }, 
+      {loggedin:false}, null, function (err, docs) {
+      if (err){
+          console.log(err)
+      }
+      
+  });
+    req.logout(async function (err) {
+      if (err) {
+        return next(err);
+      }
+
+        res.render("logout1");
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err });
+  }
+});
+
+app.post("/logout", async function (req, res) {
+  try {
+    
+    const UserName=req.session.userId;
+    User.findOneAndUpdate({username: UserName }, 
+      {loggedin:false}, null, function (err, docs) {
+      if (err){
+          console.log(err)
+      }
+      
+  });
+    req.logout(async function (err) {
+      if (err) {
+        return next(err);
+      }
+      res.render("logout1");
+      
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err });
+  }
+});
+
+app.use(async (req, res) => {
+  res.render("404");
 });
 
 // function isLoggedIn(req, res, next) {

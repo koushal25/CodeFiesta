@@ -9,21 +9,21 @@
     <title>User | login</title>
 
 </head>
-<body>
+<body style="background-color: #1A1A1A;">
     
 
   <div class="login-box">
     <h1 class="text">Login kar Bhai</h1>
     <form action="/login" method="post">
       <div class="user-box">
-        <input type="text" name="username" required="">
-        <label>Apna Username</label>
+        <input id="login-username" autocomplete="off" type="text" name="username" required="">
+        <label >Apna Username</label>
       </div>
       <div class="user-box">
         <input type="password" name="password" required="">
         <label>Apna Password</label>
       </div>
-      <button type="submit" class="btn btn-primary">Login</button>
+      <button onclick="userf()" type="submit" class="btn btn-primary">Login</button>
     </form>
   </div>
   

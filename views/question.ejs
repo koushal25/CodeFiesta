@@ -12,7 +12,7 @@
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-  <link rel="stylesheet" href="timer.css">
+  <link rel="stylesheet" href="/timer.css">
 
   <!-- Google Fonts -->
   <link
@@ -32,14 +32,15 @@
   <link href="assets/css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="background-color: #1A1A1A;" onload="checkDisabled()">
+<!-- <body > -->
 
   <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top d-flex align-items-center">
+  <header style="background-color:#1A1A1A;" id="header"  class="fixed-top d-flex align-items-center">
     <div class="container d-flex align-items-center">
 
       <br><br><br>
-      <h1 class="logo me-auto"><a href="index.html"><span>Bhai ne bola to likhne ka..</span></a></h1>
+      <h1 style="color: white;" class="logo me-auto"><span>Bhai ne bola to likhne ka..</span></h1>
 
     </div>
   </header><!-- End Header -->
@@ -50,41 +51,37 @@
 
       <div class="section-title" style="margin-top: 0px;">
         <br><br>
-        <h2>QUESTIONS</h2>
-        <p>Let's Start!!</p>
+        <h2 style="color: white;">QUESTIONS</h2>
+        <p style="color: white;">Let's Start!!</p>
       </div>
 
       <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
 
         <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-
-          <div class="portfolio-wrap" >
-
-            <img src="assets/img/1.png" class="img-fluid "   id="img1-id" alt="">
+          <div class="portfolio-wrap">
+            <img src="assets/img/1.png" class="img-fluid" id="img1-id" alt="">
+            <a onclick="f1()" id="abc" class="" href="question/question1" target="_self" >
             <div class="portfolio-info">
-              <a href="question/question1" target="_blank">
-              <h4>Question 1</h4>
-              </a>
+              <!-- <a onclick="f1()" id="abc" href="question/question1" target="_self"> -->
+                <h4>Question 1</h4>
             </div>
-              
+            </a>
           </div>
-
         </div>
         <div class="col-lg-4 col-md-6 portfolio-item filter-app">
           <div class="portfolio-wrap">
             <img src="assets/img/2.jpg" class="img-fluid" alt="">
+            <a onclick="f2()" id="abc2"  class="" href="question/question2" target="_self">
             <div class="portfolio-info">
-              <a href="question/question2" target="_blank">
                 <h4>Question 2</h4>
-                </a>
-              
             </div>
+            </a>
           </div>
         </div>
 
 
 
-        <div class="col-lg-4 col-md-6 portfolio-item filter-app" >
+        <div class="col-lg-4 col-md-6 portfolio-item filter-app">
           <div class="portfolio-wrap" style="height: 200px;">
             <img src="assets/img/3.jpg" class="img-fluid" style="height: 200px;" alt="">
 
@@ -93,12 +90,11 @@
             object-fit:fit;padding: 40px;
             background-color: white;
             "  -->
+            <a onclick="f3()" id="abc3"  class="" href="question/question3" target="_self">
             <div class="portfolio-info">
-              <a href="question/question3" target="_blank">
                 <h4>Question 3</h4>
-                </a>
-              
             </div>
+            </a>
           </div>
         </div>
 
@@ -110,10 +106,20 @@
   </main><!-- End #main -->
 
 
-  <div>
-  <button type="button" id="countdown" class="btn btn-success">Chalu Ho gaya BHAI !!!</button>
+  <div class="parent-div">
+
+    <div class="container1">
+      <button type="button" id="countdown" class="btn btn-success">Chalu Ho gaya BHAI !!!</button>
+    </div>
+
+    <div id="container2-id" class="container2">
+      <form id="form-id" action="logout" method="post">
+        <button onclick="endTest()" type="submit" id="Submit-id" class="btn btn-success"> End Test </button>
+      </form>
+    </div> 
+
   </div>
-  <!-- <div id="countdown"></div> -->
+
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
@@ -130,62 +136,113 @@
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
 
-  
+
 
 
   <script>
-  var startTime = localStorage.getItem("startTime");
-        var timeLimit = 5 * 60 * 1000; // 1 minute in milliseconds
-        var countdownElement = document.getElementById("countdown");
 
-        function updateCountdown() {
-            var currentTime = new Date().getTime();
-            var timeElapsed = currentTime - startTime;
-            var timeRemaining = timeLimit - timeElapsed;
-
-
-            if (timeRemaining <= 10*1000) 
-              {
-                countdownElement.style.color="white"
-                countdownElement.style.background="red";
-              }
-
-            if (timeRemaining <= 0) {
-              countdownElement.style.fontWeight="bold";
-              countdownElement.style.fontSize="25px";
-            countdownElement.innerHTML = "Time's up!";
-            
+    function redirect3()
+    {
+      window.location.href = "question/question3";
+    }
+    var startTime = localStorage.getItem("startTime");
+    var timeLimit = 30 * 60 * 1000; // 1 minute in milliseconds
+    var countdownElement = document.getElementById("countdown");
+    var container2 = document.getElementById("container2-id");
 
 
-            localStorage.removeItem("timer");
+    function endTest()
+    {
+        countdownElement.innerText="Time's Up!";
+        localStorage.removeItem("timer");
+        localStorage.removeItem("q1");
+        localStorage.removeItem("q2");
+        localStorage.removeItem("q3");
+    }
 
-            } else {
-            var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-            countdownElement.innerHTML = "Time remaining: " + minutes + "m " + seconds + "s";
-            localStorage.setItem("timer", "active");
-            }
-        }
+    function updateCountdown() {
+      var currentTime = new Date();
+      var timeElapsed = currentTime - startTime;
+      var timeRemaining = timeLimit - timeElapsed;
 
-        function resetTimer(event) {
-            event.preventDefault();
-            startTime = new Date().getTime();
-            localStorage.setItem("startTime", startTime);
-            localStorage.removeItem("timer");
-        }
-        // Check if the timer is still active after refreshing the page
-        if (localStorage.getItem("timer") === "active") {
-            setInterval(updateCountdown, 1000);
-        } else {
-            startTime = new Date().getTime();
-            localStorage.setItem("startTime", startTime);
-            setInterval(updateCountdown, 1000);
-        }
 
-        // Add event listener to reset button
-        var resetButton = document.querySelector("input[type=submit]");
-        resetButton.addEventListener("click", resetTimer);
-        </script>
+      if (timeRemaining <= 5* 60 * 1000) {
+        countdownElement.style.color = "white"
+        countdownElement.style.background = "red";
+      }
+
+      if (timeRemaining <= 0) {
+        countdownElement.style.fontWeight = "bold";
+        countdownElement.style.fontSize = "25px";
+        
+        countdownElement.innerHTML = "Time's up!";
+
+        localStorage.setItem("q1", false);
+        localStorage.setItem("q2", false);
+        localStorage.setItem("q3", false);
+        localStorage.removeItem("timer");
+        window.location.href = "/logout";
+        
+    
+
+      } else {
+        var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+        countdownElement.innerHTML = "Time remaining: " + minutes + "m " + seconds + "s";
+        localStorage.setItem("timer", "active");
+      }
+    }
+
+    function resetTimer(event) {
+      event.preventDefault();
+      startTime = new Date().getTime();
+      localStorage.setItem("startTime", startTime);
+      localStorage.removeItem("timer");
+    }
+    // Check if the timer is still active after refreshing the page
+    if (localStorage.getItem("timer") === "active") {
+      setInterval(updateCountdown, 1000);
+    } else {
+      startTime = new Date().getTime();
+      localStorage.setItem("startTime", startTime);
+      setInterval(updateCountdown, 1000);
+    }
+
+    // Add event listener to reset button
+    var resetButton = document.querySelector("input[type=submit]");
+    resetButton.addEventListener("click", resetTimer);
+
+  </script>
+
+
+<script type="text/javascript">
+  function checkDisabled () {
+    if (localStorage.getItem("q1") === "true") {
+      document.getElementById("abc").classList.add("disabled");
+    }
+    if (localStorage.getItem("q2") === "true") {
+      document.getElementById("abc2").classList.add("disabled");
+    }
+    if (localStorage.getItem("q3") === "true") {
+      document.getElementById("abc3").classList.add("disabled");
+    }
+  }
+  var flag=0;
+  function f1()
+  {
+    localStorage.setItem("q1", true);
+  }
+  function f2()
+  {
+    localStorage.setItem("q2", true);
+  }
+  function f3()
+  {
+    localStorage.setItem("q3", true);
+  }
+
+
+</script>
 
 </body>
 

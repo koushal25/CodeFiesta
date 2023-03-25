@@ -1,8 +1,56 @@
+body {
+    font-family: "Open Sans", sans-serif;
+    /* color: #fff; */
+    background-color:#463d3d;
+  }
+
+p{
+    font-size: 1.5em;
+}
+#header{
+    background-color: antiquewhite;
+}
+
 #countdown{
 
     font-family: sans-serif;
-    border-radius: 30%;
+
     width: 150px;
     height: 100px;
-    margin-left: 45%;
+    padding: 3px;
+    font-size: 1.2rem;
+
+}
+
+#Submit-id{
+
+    font-family: sans-serif;
+
+    width: 150px;
+    height: 100px;
+    font-size: 25px;
+}
+
+#form-id{
+    width: 50px;
+}
+
+.parent-div{
+
+    display: flex;
+    justify-content: center;
+    /* background-color: antiquewhite; */
+}
+
+.container1{
+
+    margin-right: 40px;
+}
+.container2{
+
+    margin-right: 105px;
+}
+
+.disabled {
+    pointer-events: none;
 }

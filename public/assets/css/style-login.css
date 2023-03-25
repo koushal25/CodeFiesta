@@ -5,7 +5,7 @@ html {
     margin:0;
     padding:0;
     font-family: sans-serif;
-    background: linear-gradient(lightblue, white);
+    /* background: linear-gradient(lightblue, white); */
   }
   
   .login-box {
@@ -23,7 +23,7 @@ html {
   }
 
   .login-box:hover{
-    box-shadow: 0 15px 25px rgba(238, 23, 23, 0.915);
+    box-shadow: 0 20px 25px rgba(39, 81, 87, 0.915);
     
   }
   
@@ -51,6 +51,7 @@ html {
     outline: none;
     background: transparent;
   }
+
   .login-box .user-box label {
     position: absolute;
     top:0;
@@ -69,20 +70,6 @@ html {
     color: #fff;
     font-size: 12px;
   }
-  
-  /* .login-box form a {
-    position: relative;
-    display: inline-block;
-    padding: 10px 20px;
-    color: #03e9f4;
-    font-size: 16px;
-    text-decoration: none;
-    text-transform: uppercase;
-    overflow: hidden;
-    transition: .5s;
-    margin-top: 40px;
-    letter-spacing: 4px
-  } */
   
 
   .text
@@ -106,6 +93,7 @@ html {
     height: 30px;
     border-radius: 10px;
   }
+
   
   @keyframes btn-anim1 {
     0% {
